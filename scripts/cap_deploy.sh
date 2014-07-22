@@ -2,6 +2,6 @@
 
 pwd
 whoami
-cd /mnt/xvdf/jenkins/reso/repos/operations/capistrano/glassfish/
+cd /home/deploy/Code/capistrano_SK2014/scripts/cap_deploy.sh
 source /etc/profile.d/rvm.sh
-exec cap staging deploy
+exec cap $1 deploy
