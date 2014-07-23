@@ -1,14 +1,15 @@
 # config valid only for Capistrano 3.1
-lock '3.1.0'
+# lock '3.1.0'
 
-set :application, 'my_app_name'
-set :repo_url, 'git@example.com:me/my_repo.git'
+set :application, 'capistrano_SK2014'
+set :repo_url, 'git@github.com:mario-camacho2/capistrano_SK2014.git'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+set :branch, 'develop'
 
 # Default deploy_to directory is /var/www/my_app
-# set :deploy_to, '/var/www/my_app'
+set :deploy_to, '/usr/local/my_apps/capistranoSK2014'
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -34,6 +35,13 @@ set :repo_url, 'git@example.com:me/my_repo.git'
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+# SK2014 Custom Configurations
+set :jenkins_ssh_user,            "deploy"
+set :jenkins_server_dns,          "ci.reso.io"
+set :jenkins_home,                "/mnt/xvdf/jenkins"
+
+set :asadmin,                     "/home/deploy/glassfish-3.1.2.2/bin/asadmin"
+
 namespace :deploy do
 
   desc 'Restart application'
@@ -52,6 +60,26 @@ namespace :deploy do
       # within release_path do
       #   execute :rake, 'cache:clear'
       # end
+    end
+  end
+
+end
+
+namespace :mario do
+
+  task :restart do
+    on roles(:app) do
+
+    end
+  end
+
+end
+
+namespace :asadmin do
+
+  task :ls do
+    on roles(:app) do
+      execute "#{asadmin} list-domains"
     end
   end
 
