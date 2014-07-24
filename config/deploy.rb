@@ -106,7 +106,8 @@ namespace :asadmin do
 
     task :apps do
       on roles(:app) do
-        execute "#{fetch(:asadmin)} list-applications"
+        _passwordfile = "#{fetch(:deploy_to)}/#{fetch(:passwordfile)}"
+        execute "#{fetch(:asadmin)} list-applications --passwordfile #{_passwordfile}"
       end
     end
   end
