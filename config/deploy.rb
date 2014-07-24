@@ -37,10 +37,11 @@ set :deploy_to, '/usr/local/my_apps/capistranoSK2014'
 
 # SK2014 Custom Configurations
 set :jenkins_ssh_user,            "deploy"
-set :jenkins_server_dns,          "ci.reso.io"
-set :jenkins_home,                "/mnt/xvdf/jenkins"
+set :jenkins_server_dns,          "MCAMACHOC-DV02"
+set :jenkins_home,                "/home/deploy/.jenkins"
 
 set :asadmin,                     "/home/deploy/glassfish-3.1.2.2/bin/asadmin"
+set :domain,                      "domain1"
 
 namespace :deploy do
 
@@ -67,9 +68,9 @@ end
 
 namespace :mario do
 
-  task :restart do
+  task :ls do
     on roles(:app) do
-
+      execute "cd #{current_path} && ls -la"
     end
   end
 
@@ -77,10 +78,36 @@ end
 
 namespace :asadmin do
 
-  task :ls do
-    on roles(:app) do
-      execute "#{asadmin} list-domains"
+  namespace :ls do
+    task :domains do
+      on roles(:app) do
+        execute "#{fetch(:asadmin)} list-domains"
+      end
     end
-  end
 
+    task :apps do
+      on roles(:app) do
+        execute "#{fetch(:asadmin)} list-applications"
+      end
+    end
+
+    task :start do
+      on roles(:app) do
+        execute "#{fetch(:asadmin)} start-domain #{fetch(:domain)}"
+      end
+    end
+
+    task :stop do
+      on roles(:app) do
+        execute "#{fetch(:asadmin)} stop-domain #{fetch(:domain)}"
+      end
+    end
+
+    task :restart do
+      on roles(:app) do
+        execute "#{fetch(:asadmin)} restart-domain #{fetch(:domain)}"
+      end
+    end
+
+  end
 end
