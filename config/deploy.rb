@@ -92,6 +92,7 @@ namespace :mario do
     invoke 'asadmin:restart'
     invoke 'asadmin:deploy'
   end
+  after 'deploy:finished', 'mario:deploy'
 
 end
 
